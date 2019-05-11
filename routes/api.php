@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -16,3 +14,5 @@ use Illuminate\Http\Request;
 Route::resource('/create_subscription', 'SubscriptionsController');
 
 Route::any('/update_subscription/{action}/{id}', 'SubscriptionsController@edit');
+
+Route::any('/show/{id}', 'SubscriptionsController@show');

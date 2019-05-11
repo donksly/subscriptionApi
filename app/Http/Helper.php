@@ -8,7 +8,6 @@
 
 namespace App\Http;
 
-
 class Helper
 {
     public function subscriptionStatus($flag)

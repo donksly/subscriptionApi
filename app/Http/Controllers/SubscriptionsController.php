@@ -6,7 +6,6 @@ use App\Http\Helper;
 use App\Subscriptions;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class SubscriptionsController extends Controller
 {
@@ -44,20 +43,43 @@ class SubscriptionsController extends Controller
             /*
              * uncomment for unit test
              * */
-            return true;
+            //return true;
         } catch (\Exception $e) {
             /*
              * uncomment for unit test
              * */
-            return false;
+            //return false;
         }
-
-        //return $this->index();
+        return $this->index();
     }
 
-    public function show($id)
+    public function show($id, Helper $helper)
     {
-        //
+        $returnStr = "Failure to view single subscription!";
+
+        try {
+            $findSingleSubscriberById = Subscriptions::find($id);
+            if (isset($findSingleSubscriberById->id)) {
+                $returnStr = array('name' => $findSingleSubscriberById->name,
+                    'email' => $findSingleSubscriberById->email,
+                    'status' => $helper->subscriptionStatus($findSingleSubscriberById->subscription_status),
+                    'created_at' => $helper->formatDateTime($findSingleSubscriberById->created_at),
+                    'updated_at' => $helper->formatDateTime($findSingleSubscriberById->updated_at)
+                );
+
+                /*
+                * uncomment for unit test
+                * */
+                //return true;
+            }
+        } catch (\Exception $e) {
+            /*
+            * uncomment for unit test
+            * */
+            //return false;
+        }
+        session()->flash('message', response()->json($returnStr));
+        return $this->index();
     }
 
     public function edit($action, $id)
@@ -90,11 +112,6 @@ class SubscriptionsController extends Controller
         }
         session()->flash('message', response()->json($returnStr));
         return $this->index();
-    }
-
-    public function update(Request $request, $id)
-    {
-        //
     }
 
     public function checkExistence($email)
