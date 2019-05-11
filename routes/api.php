@@ -14,3 +14,5 @@ use Illuminate\Http\Request;
 */
 
 Route::resource('/create_subscription', 'SubscriptionsController');
+
+Route::any('/update_subscription/{action}/{id}', 'SubscriptionsController@edit');

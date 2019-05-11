@@ -56,7 +56,7 @@
 
                                         @elseif($subscription->subscription_status == 1)
                                            <a href="/api/update_subscription/{{2}}/{{$subscription->id}}"
-                                              class="btn btn-danger btn-sm">Unsubscribed</a>
+                                              class="btn btn-danger btn-sm">Unsubscribe</a>
 
                                         @elseif($subscription->subscription_status == 2)
                                             <a href="javascript:;" class="btn btn-secondary disabled btn-sm">

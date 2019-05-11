@@ -12,7 +12,7 @@ class SubscriptionsController extends Controller
 {
     public function index()
     {
-        $subscriptions = Subscriptions::all();
+        $subscriptions = Subscriptions::all()->sortByDesc('id');
         $helper = new Helper();
         return view('home', compact('subscriptions'))->with('helper', $helper);
     }
@@ -24,7 +24,7 @@ class SubscriptionsController extends Controller
 
         $checkExistence = $this->checkExistence($email);
 
-        $responseStr = 'Email '.$email.' already subscribed under the name '.$userName;
+        $returnStr = 'Email '.$email.' already subscribed under the name '.$userName;
 
         try {
             if ($checkExistence == 0) {
@@ -36,23 +36,23 @@ class SubscriptionsController extends Controller
                 $addSubscription->updated_at = Carbon::now();
                 $addSubscription->save();
 
-                $responseStr = 'User '.$userName.' successfully added with email '.$email;
+                $returnStr = 'User '.$userName.' successfully added with email '.$email;
             }
 
-            session()->flash('message', response()->json($responseStr));
+            session()->flash('message', response()->json($returnStr));
 
             /*
              * uncomment for unit test
              * */
-            //return true;
+            return true;
         } catch (\Exception $e) {
             /*
              * uncomment for unit test
              * */
-            //return false;
+            return false;
         }
 
-        return $this->index();
+        //return $this->index();
     }
 
     public function show($id)
@@ -60,9 +60,36 @@ class SubscriptionsController extends Controller
         //
     }
 
-    public function edit($id)
+    public function edit($action, $id)
     {
-        //
+        $returnStr = "Failure to execute action on subscription!";
+
+        try {
+            $findSubscriberById = Subscriptions::find($id);
+            if (isset($findSubscriberById->id)) {
+                if (($findSubscriberById->subscription_status !== 2 && $action !== 2) || ($action == 1)) {
+                    $findSubscriberById->subscription_status = $action;
+                    $findSubscriberById->updated_at = Carbon::now();
+                    $findSubscriberById->save();
+
+                    $helper = new Helper();
+                    $returnStr = 'Subscription for '.$findSubscriberById->email.' has successfully changed status to '.
+                        $helper->subscriptionStatus($action);
+
+                    /*
+                    * uncomment for unit test
+                    * */
+                    //return true;
+                }
+            }
+        } catch (\Exception $e) {
+            /*
+            * uncomment for unit test
+            * */
+            //return false;
+        }
+        session()->flash('message', response()->json($returnStr));
+        return $this->index();
     }
 
     public function update(Request $request, $id)
