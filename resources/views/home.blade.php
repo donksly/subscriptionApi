@@ -3,13 +3,22 @@
         <div class="home-div-container">
             <h2>AZOWO Email Subscriptions</h2>
 
-            <button class="btn btn-primary" data-toggle="modal" data-target="#subscriptionModal">
-                <i class="fa fa-mouse-pointer"></i> Click to subscribe!
-            </button>
+            <div class="row col-md-8">
+                <div class="col col-md-2">
+                    <a href="{{ url('/') }}" class="btn btn-default">
+                        <i class="fa fa-home fa-2x"></i>
+                    </a>
+                </div>
+                <div class="col col-md-4">
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#subscriptionModal">
+                        <i class="fa fa-mouse-pointer"></i> Click to subscribe!
+                    </button>
+                </div>
+            </div>
 
             @if (session()->has('message'))
                 <div class="alert alert-primary alert-dismissible fade show" role="alert">
-                    <strong>Alert</strong> {{session()->get('message')}}
+                    <strong>Response</strong> {{json_encode(session()->get('message'), JSON_PRETTY_PRINT) }}
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -26,30 +35,45 @@
                         <th>Email</th>
                         <th>Status</th>
                         <th>Action</th>
+                        <th>View</th>
                         <th>Created</th>
                         <th>Last Updated</th>
                     </tr>
                     </thead>
                     <tbody>
-                    @if (is_array($subscriptions) > 0)
+                    @if (isset($subscriptions))
                         <?php $i = 1; ?>
                         @foreach($subscriptions as $subscription)
                             <tr>
-                                <td>{{$i++}}</td>
-                                <td>{{$subscription->name}}</td>
-                                <td>{{$subscription->email}}</td>
-                                <td>{{$subscription->subscription_status}}</td>
-                                <td>{{$subscription->subscription_status}}</td>
-                                <td>{{$subscription->created_at}}</td>
-                                <td>{{$subscription->updated_at}}</td>
+                                <td>{{ $i++ }}</td>
+                                <td>{{ $subscription->name }}</td>
+                                <td>{{ $subscription->email }}</td>
+                                <td>{{ $helper->subscriptionStatus($subscription->subscription_status) }}</td>
+                                <td>
+                                    @if ($subscription->subscription_status == 0)
+                                            <a href="/api/update_subscription/{{1}}/{{$subscription->id}}"
+                                               class="btn btn-success btn-sm">Confirm Subscription</a>
+
+                                        @elseif($subscription->subscription_status == 1)
+                                           <a href="/api/update_subscription/{{2}}/{{$subscription->id}}"
+                                              class="btn btn-danger btn-sm">Unsubscribed</a>
+
+                                        @elseif($subscription->subscription_status == 2)
+                                            <a href="javascript:;" class="btn btn-secondary disabled btn-sm">
+                                                {{ $helper->subscriptionStatus($subscription->subscription_status) }}
+                                            </a>
+                                    @endif
+                                </td>
+                                <td>
+                                    <a href="/api/show/{{$subscription->id}}" class="btn btn-info btn-sm">View</a>
+                                </td>
+                                <td>{{ $helper->formatDateTime($subscription->created_at) }}</td>
+                                <td>{{ $helper->formatDateTime($subscription->updated_at) }}</td>
                             </tr>
                             @endforeach
                         @else
-                        <span>No subscribers added!</span>
+                            <span>No subscribers added!</span>
                         @endif
-                    <tr>
-                        <td></td>
-                    </tr>
                     </tbody>
                     <tfoot>
                     <tr>
@@ -58,6 +82,7 @@
                         <th>Email</th>
                         <th>Status</th>
                         <th>Action</th>
+                        <th>View</th>
                         <th>Created</th>
                         <th>Last Updated</th>
                     </tr>
@@ -74,7 +99,8 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <form autocomplete="off" id="subscriptionForm">
+                        <form action="/api/create_subscription" method="post" autocomplete="off" id="subscriptionForm">
+                            @csrf
                             <div class="modal-body">
                                 <h5>Enjoyed this article? Get this and more in your inbox every friday!</h5>
                                 <span>
@@ -83,14 +109,14 @@
 
                                 <div class="form-group">
                                     <label for="userName">Name:</label>
-                                    <input type="text" maxlength="30" id="userName" placeholder="Preferred name"
+                                    <input type="text" name="userName" maxlength="30" id="userName" placeholder="Preferred name"
                                            class="form-control" required>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="subscriberEmail">Your Email:</label>
                                     <div class="input-group">
-                                        <input type="email" maxlength="50" id="subscriberEmail" placeholder="Email"
+                                        <input type="email" name="email" maxlength="50" id="subscriberEmail" placeholder="Email"
                                                class="form-control"/>
                                         <span class="input-group-btn">
                                             <button class="btn btn-success" type="submit"><i class="fa fa-send"></i> Subscribe!</button>
