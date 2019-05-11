@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Helper;
+use App\Subscriptions;
 use Illuminate\Http\Request;
 
 class SubscriptionsController extends Controller
@@ -13,7 +15,13 @@ class SubscriptionsController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $subscriptions = new Subscriptions();
+        $helper = new Helper();
+        return view('home', compact('subscriptions'))->with('helper', $helper);
+    }
+
+    public function showAllSubscribers(){
+        //
     }
 
     /**

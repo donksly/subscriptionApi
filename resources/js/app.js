@@ -9,4 +9,6 @@ require('datatables.net-bs4');
 require('bootstrap');
 require('jquery-ui');
 
-var defaultError = 'Error in request, contact system admin!';
+$(document).ready(function () {
+    $('#example').DataTable();
+});

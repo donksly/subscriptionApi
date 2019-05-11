@@ -34043,7 +34043,9 @@ __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap
 
 __webpack_require__(/*! jquery-ui */ "./node_modules/jquery-ui/ui/widget.js");
 
-var defaultError = 'Error in request, contact system admin!';
+$(document).ready(function () {
+  $('#example').DataTable();
+});
 
 /***/ }),
 

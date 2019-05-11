@@ -23,3 +23,49 @@ body {
     margin-top: 2%;
 }
 
+textarea:focus,
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="datetime"]:focus,
+input[type="datetime-local"]:focus,
+input[type="date"]:focus,
+input[type="month"]:focus,
+input[type="time"]:focus,
+input[type="week"]:focus,
+input[type="number"]:focus,
+input[type="email"]:focus,
+input[type="url"]:focus,
+input[type="search"]:focus,
+input[type="tel"]:focus,
+input[type="color"]:focus,
+.uneditable-input:focus,
+.custom-select {
+    border-color: rgba(0, 0, 0, 0.075);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(0, 0, 0, 0.007);
+    outline: 0 none;
+}
+
+input, .btn {
+    border-radius: 1px !important;
+}
+
+.home-div-container h2 {
+    font-size: 25px !important;
+}
+
+.modal-body h5, .modal-body span, .modal-body input, .modal-body .btn{
+    font-size: 13px !important;
+}
+
+.modal-body .form-group {
+    margin-top: 2%;
+}
+
+.subscribersListDiv, .alert {
+    margin-top: 4%;
+    font-size: 12px !important;
+}
+
+#example_filter, #example_paginate {
+    float: right !important;
+}
