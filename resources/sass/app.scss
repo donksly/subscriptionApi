@@ -7,7 +7,19 @@
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
+//Font Awesome
+@import "~font-awesome/scss/font-awesome";
+
+body {
+    color: dimgrey;
+}
+
 .navbar-laravel {
     background-color: #fff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
+
+.home-div-container {
+    margin-top: 2%;
+}
+

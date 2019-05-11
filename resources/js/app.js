@@ -4,4 +4,9 @@
  * application frontend using useful Laravel and JavaScript libraries.
  */
 
-require('./bootstrap');
+window.$ = window.jQuery = require('jquery');
+require('datatables.net-bs4');
+require('bootstrap');
+require('jquery-ui');
+
+var defaultError = 'Error in request, contact system admin!';
